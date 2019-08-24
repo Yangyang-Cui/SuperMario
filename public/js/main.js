@@ -10,11 +10,15 @@ loadImage('../img/tiles.png')
   .then(image => {
     const sprites = new SpriteSheet(image, 16, 16)
     sprites.define('ground', 0, 0)
-    sprites.draw('ground', context, 32, 32)
     sprites.define('sky', 3, 21)
     for (let x = 0; x < 25; x++) {
       for (let y = 0; y < 14; y++) {
-        sprites.draw('sky', context, x * 16, y * 16)
+        sprites.drawTile('sky', context, x, y)
+      }
+    }
+    for (let x = 0; x < 25; x++) {
+      for (let y = 12; y < 14; y++) {
+        sprites.drawTile('ground', context, x, y)
       }
     }
   })
