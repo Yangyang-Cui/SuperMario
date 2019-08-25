@@ -29,6 +29,9 @@ Promise.all([
   loadLevel('1-1')
 ])
   .then(([sprites, level]) => {
+    // console.log(sprites)
+    // console.log(level)
+    // console.log([sprites, level])
     level.backgrounds.forEach(background => {
       drawBackground(background, context, sprites)
     })
