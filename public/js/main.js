@@ -22,7 +22,7 @@ loadImage('../img/tiles.png')
 
     loadLevel('1-1')
       .then((level) => {
-        console.log(level)
+        // console.log(level)
         level.backgrounds.forEach(background => {
           drawBackground(background, context, sprites)
         })
