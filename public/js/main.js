@@ -16,12 +16,14 @@ function drawBackground (background, context, sprites) {
 
 loadImage('../img/tiles.png')
   .then(image => {
+    console.log('load image', image)
     const sprites = new SpriteSheet(image, 16, 16)
     sprites.define('ground', 0, 0)
     sprites.define('sky', 3, 21)
 
     loadLevel('1-1')
       .then((level) => {
+        console.log('load level', level)
         level.backgrounds.forEach(background => {
           drawBackground(background, context, sprites)
         })
