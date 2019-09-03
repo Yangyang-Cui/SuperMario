@@ -12,22 +12,20 @@ export function loadImage (url) {
   })
 }
 
-export function loadLevel (name) {
-  return Promise.all([
+export async function loadLevel (name) {
+  const [levelSpec, backgroundSprites] = await Promise.all([
     window.fetch(`../levels/${name}.json`)
       .then(r => r.json()),
     loadBackgroundSprites()
-  ]).then(([levelSpec, backgroundSprites]) => {
-    const level = new Level()
+  ])
+  const level = new Level()
+  const backgroundLayer = createBackgroundLayer(
+    levelSpec.backgrounds,
+    backgroundSprites
+  )
+  level.comp.layers.push(backgroundLayer)
+  const spriteLayer = createSpriteLayer(level.entities)
+  level.comp.layers.push(spriteLayer)
 
-    const backgroundLayer = createBackgroundLayer(
-      levelSpec.backgrounds,
-      backgroundSprites
-    )
-    level.comp.layers.push(backgroundLayer)
-    const spriteLayer = createSpriteLayer(level.entities)
-    level.comp.layers.push(spriteLayer)
-
-    return level
-  })
+  return level
 }
