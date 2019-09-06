@@ -17,7 +17,6 @@ Promise.all([
   const SPACE = 32
   const input = new Keyboard()
   input.addMapping(SPACE, (keyState) => {
-    console.log(keyState)
     if (keyState) {
       mario.jump.start()
     } else {
@@ -25,6 +24,16 @@ Promise.all([
     }
   })
   input.listenTo(window)
+
+  const mouseControl = ['mousedown', 'mousemove']
+  mouseControl.forEach((eventName) => {
+    canvas.addEventListener(eventName, (event) => {
+      if (event.buttons === 1) {
+        mario.vel.set(0, 0)
+        mario.pos.set(event.offsetX, event.offsetY)
+      }
+    })
+  })
 
   const timer = new Timer(1 / 60)
   timer.update = function update (deltaTime) {
