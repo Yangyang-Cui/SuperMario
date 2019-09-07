@@ -7,8 +7,8 @@ export function createMario () {
   return loadMarioSprite()
     .then((sprite) => {
       const mario = new Entity()
-      mario.addTrait(new Jump())
       mario.addTrait(new Velocity())
+      mario.addTrait(new Jump())
       mario.draw = function drawMario (context) {
         sprite.draw('idle', context, this.pos.x, this.pos.y)
       }

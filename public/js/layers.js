@@ -18,3 +18,23 @@ export function createSpriteLayer (entities) {
     })
   }
 }
+export function createCollisionLayer (level) {
+  const resolverTiles = []
+  const tileResolver = level.tileCollider.tiles
+  const tileSize = tileResolver.tileSize
+  const getByIndexOriginal = tileResolver.getByIndex
+  tileResolver.getByIndex = function getByIndexFake (x, y) {
+    resolverTiles.push({ x, y })
+    // console.log(resolverTiles)
+    return getByIndexOriginal.call(tileResolver, x, y)
+  }
+  return function drawCollisionLayer (context) {
+    context.strokeStyle = 'blue'
+    resolverTiles.forEach(({ x, y }) => {
+      context.beginPath()
+      context.rect(x * tileSize, y * tileSize, tileSize, tileSize)
+      context.stroke()
+    })
+    resolverTiles.length = 0
+  }
+}
