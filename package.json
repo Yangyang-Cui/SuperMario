@@ -1,18 +1,26 @@
 {
-  "name": "mario_project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-      "start": "serve ./public",
-      "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-      "serve": "^11.0.0"
-  },
-  "devDependencies": {
-      "standard": "^14.0.2"
-  }
+    "name": "mario_project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "serve ./public",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint ./public/js --fix",
+        "lint:create": "eslint --init"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "serve": "^11.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^6.3.0",
+        "eslint-config-standard": "^14.1.0",
+        "eslint-plugin-import": "^2.18.2",
+        "eslint-plugin-node": "^10.0.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "standard": "^14.0.2"
+    }
 }
