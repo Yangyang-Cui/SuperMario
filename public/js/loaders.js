@@ -26,21 +26,22 @@ function createTiles (level, backgrounds) {
   })
 }
 
-export async function loadLevel (name) {
-  const [levelSpec, backgroundSprites] = await Promise.all([
+export function loadLevel (name) {
+  return Promise.all([
     window.fetch(`../levels/${name}.json`)
       .then(r => r.json()),
     loadBackgroundSprites()
-  ])
-  const level = new Level()
-  createTiles(level, levelSpec.backgrounds)
-  const backgroundLayer = createBackgroundLayer(
-    level,
-    backgroundSprites
-  )
-  level.comp.layers.push(backgroundLayer)
-  const spriteLayer = createSpriteLayer(level.entities)
-  level.comp.layers.push(spriteLayer)
+  ]).then(([levelSpec, backgroundSprites]) => {
+    const level = new Level()
+    createTiles(level, levelSpec.backgrounds)
+    const backgroundLayer = createBackgroundLayer(
+      level,
+      backgroundSprites
+    )
+    level.comp.layers.push(backgroundLayer)
+    const spriteLayer = createSpriteLayer(level.entities)
+    level.comp.layers.push(spriteLayer)
 
-  return level
+    return level
+  })
 }
