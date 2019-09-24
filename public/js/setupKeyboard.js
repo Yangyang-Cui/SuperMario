@@ -8,10 +8,10 @@ export function setupKeyboard (entity) {
       entity.jump.cancel()
     }
   })
-  input.addMapping('ArrowRight', (keyState) => {
+  input.addMapping('KeyD', (keyState) => {
     entity.go.dir = keyState
   })
-  input.addMapping('ArrowLeft', (keyState) => {
+  input.addMapping('KeyA', (keyState) => {
     entity.go.dir = -keyState
   })
   return input
