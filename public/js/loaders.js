@@ -55,7 +55,11 @@ export async function loadSpriteSheet (name) {
       sprites.defineTile(tileSpec.name, tileSpec.index[0], tileSpec.index[1])
     })
   }
-
+  if (sheetSpec.frames) {
+    sheetSpec.frames.forEach((frameSpec) => {
+      sprites.define(frameSpec.name, ...frameSpec.rect)
+    })
+  }
   return sprites
 }
 

@@ -38,6 +38,7 @@ export function createSpriteLayer (entities, width = 64, height = 64) {
   const spriteBufferContext = spriteBuffer.getContext('2d')
   return function drawSpriteLayer (context, camera) {
     entities.forEach((entity) => {
+      spriteBufferContext.clearRect(0, 0, width, height)
       entity.draw(spriteBufferContext)
       context.drawImage(
         spriteBuffer,
