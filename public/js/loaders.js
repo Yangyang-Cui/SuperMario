@@ -1,6 +1,7 @@
 import Level from './Level.js'
 import { createBackgroundLayer, createSpriteLayer } from './layers.js'
 import SpriteSheet from './SpriteSheet.js'
+import { createAnim } from './anim.js'
 
 export function loadImage (url) {
   return new Promise(resolve => {
@@ -57,6 +58,12 @@ export async function loadSpriteSheet (name) {
   if (sheetSpec.frames) {
     sheetSpec.frames.forEach((frameSpec) => {
       sprites.define(frameSpec.name, ...frameSpec.rect)
+    })
+  }
+  if (sheetSpec.animations) {
+    sheetSpec.animations.forEach((animSpec) => {
+      const animation = createAnim(animSpec.frames, animSpec.frameLen)
+      sprites.defineAnim(animSpec.name, animation)
     })
   }
   console.log(sprites)

@@ -4,6 +4,7 @@ export default class SpriteSheet {
     this.width = width
     this.height = height
     this.tiles = new Map()
+    this.animations = new Map()
   }
 
   define (name, x, y, width, height) {
@@ -35,6 +36,10 @@ export default class SpriteSheet {
     this.define(name, x * this.width, y * this.height, this.width, this.height)
   }
 
+  defineAnim (name, animation) {
+    this.animations.set(name, animation)
+  }
+
   draw (name, context, x, y, flip = false) {
     const buffer = this.tiles.get(name)[flip ? 1 : 0]
     context.drawImage(buffer, x, y)
@@ -42,5 +47,10 @@ export default class SpriteSheet {
 
   drawTile (name, context, x, y) {
     this.draw(name, context, x * this.width, y * this.height)
+  }
+
+  drawAnim (name, context, x, y, distance) {
+    const animation = this.animations.get(name)
+    this.drawTile(animation(distance), context, x, y)
   }
 }

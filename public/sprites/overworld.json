@@ -37,7 +37,7 @@
       "index": [ 26, 0 ]
     }
   ],
-  "animation": [
+  "animations": [
     {
       "name": "chance",
       "frameLen": 0.12,
