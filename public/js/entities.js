@@ -14,7 +14,13 @@ export async function createMario () {
 
   const runAnim = createAnim(['run-1', 'run-2', 'run-3'], 10)
   function routeAnim (mario) {
-    if (mario.go.distance !== 0) {
+    if (mario.jump.air) {
+      return 'jump'
+    }
+    if (mario.go.distance > 0) {
+      if ((mario.vel.x > 0 && mario.go.dir < 0) || (mario.vel.x < 0 && mario.go.dir > 0)) {
+        return 'break'
+      }
       return runAnim(mario.go.distance)
     }
     return 'idle'

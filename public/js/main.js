@@ -34,6 +34,8 @@ Promise.all([
       camera.pos.x = mario.pos.x - 100
     }
     level.comp.draw(context, camera)
+    // console.log('mario.pos.x :', mario.pos.x)
+    // console.log('mario.pos.y :', mario.pos.y)
   }
   timer.start()
 })
