@@ -14,7 +14,13 @@ export default class Go extends Trait {
     const absX = Math.abs(entity.vel.x)
     if (this.dir !== 0) {
       entity.vel.x += this.dir * this.acceleration * deltaTime
-      this.heading = this.dir
+      if (entity.jump) {
+        if (entity.jump.air === false) {
+          this.heading = this.dir
+        }
+      } else {
+        this.heading = this.dir
+      }
     } else if (entity.vel.x !== 0) {
       const decel = Math.min(absX, this.deceleration * deltaTime)
       entity.vel.x += entity.vel.x > 0 ? -decel : decel
@@ -24,6 +30,5 @@ export default class Go extends Trait {
     const drag = this.dragFactor * entity.vel.x * absX
     entity.vel.x -= drag
     this.distance += absX * deltaTime
-    // console.log(entity.vel.x)
   }
 }

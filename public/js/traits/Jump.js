@@ -6,6 +6,9 @@ export default class Jump extends Trait {
     this.velocity = 200
     this.engageTime = 0
     this.already = 0
+    this.requestTime = 0
+    this.gracePeriod = 0.1
+    this.speedBoost = 0.2
   }
 
   get air () {
@@ -13,13 +16,12 @@ export default class Jump extends Trait {
   }
 
   start () {
-    if (this.already > 0) {
-      this.engageTime = this.duration
-    }
+    this.requestTime = this.gracePeriod
   }
 
   cancel () {
     this.engageTime = 0
+    this.requestTime = 0
   }
 
   obstruct (entity, side) {
@@ -31,8 +33,15 @@ export default class Jump extends Trait {
   }
 
   update (entity, deltaTime) {
+    if (this.requestTime > 0) {
+      if (this.already > 0) {
+        this.engageTime = this.duration
+        this.requestTime = 0
+      }
+      this.requestTime -= deltaTime
+    }
     if (this.engageTime > 0) {
-      entity.vel.y = -this.velocity
+      entity.vel.y = -(this.velocity + Math.abs(entity.vel.x) * this.speedBoost)
       this.engageTime -= deltaTime
     }
     this.already--
