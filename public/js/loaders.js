@@ -46,14 +46,13 @@ function createTiles (level, backgrounds) {
 function loadJSON (url) {
   return window.fetch(url).then(r => r.json())
 }
-
 export async function loadSpriteSheet (name) {
   const sheetSpec = await loadJSON(`../sprites/${name}.json`)
   const image = await loadImage(sheetSpec.imageURL)
   const sprites = new SpriteSheet(image, sheetSpec.tileW, sheetSpec.tileH)
   if (sheetSpec.tiles) {
-    sheetSpec.tiles.forEach((tileSpec) => {
-      sprites.defineTile(tileSpec.name, tileSpec.index[0], tileSpec.index[1])
+    sheetSpec.tiles.forEach((tilesSpec) => {
+      sprites.defineTile(tilesSpec.name, tilesSpec.index[0], tilesSpec.index[1])
     })
   }
   if (sheetSpec.frames) {
@@ -69,7 +68,6 @@ export async function loadSpriteSheet (name) {
   }
   return sprites
 }
-
 export async function loadLevel (name) {
   const levelSpec = await loadJSON(`../levels/${name}.json`)
   const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)

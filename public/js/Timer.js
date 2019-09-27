@@ -2,6 +2,9 @@ export default class Timer {
   constructor (deltaTime = 1 / 60) {
     let lastTime = 0
     let accumulatedTime = 0
+    if (accumulatedTime > 1) {
+      accumulatedTime = 0
+    }
     this.updateProxy = (time) => {
       accumulatedTime += (time - lastTime) / 1000
       if (accumulatedTime > 1) {

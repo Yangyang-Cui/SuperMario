@@ -4,7 +4,7 @@ import Timer from './Timer.js'
 import { setupKeyboard } from './setupKeyboard.js'
 // import { createCollisionLayer, createCameraLayer } from './layers.js'
 import Camera from './Camera.js'
-import { setupMouseControl } from './debug.js'
+// import { setupMouseControl } from './debug.js'
 
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
@@ -25,7 +25,7 @@ Promise.all([
   const input = setupKeyboard(mario)
   input.listenTo(window)
 
-  setupMouseControl(canvas, mario, camera)
+  // setupMouseControl(canvas, mario, camera)
 
   const timer = new Timer(1 / 60)
   timer.update = function update (deltaTime) {
@@ -34,6 +34,8 @@ Promise.all([
       camera.pos.x = mario.pos.x - 100
     }
     level.comp.draw(context, camera)
+    // console.log('mario.pos.x :', mario.pos.x)
+    // console.log('mario.pos.y :', mario.pos.y)
   }
   timer.start()
 })
