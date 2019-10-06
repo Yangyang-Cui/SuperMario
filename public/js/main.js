@@ -1,10 +1,12 @@
-import { loadLevel } from './loaders.js'
+// *** Debug Purpose ***
+// import { createCollisionLayer, createCameraLayer } from './layers.js'
+// import { setupMouseControl } from './debug.js'
+// **********************
+import { loadLevel } from './loaders/level.js'
 import { createMario } from './entities.js'
 import Timer from './Timer.js'
 import { setupKeyboard } from './setupKeyboard.js'
-// import { createCollisionLayer, createCameraLayer } from './layers.js'
 import Camera from './Camera.js'
-// import { setupMouseControl } from './debug.js'
 
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
@@ -18,14 +20,16 @@ Promise.all([
 
   mario.pos.set(64, 64)
   level.entities.add(mario)
-  // level.comp.layers.push(
-  //   createCollisionLayer(level),
-  //   createCameraLayer(camera))
 
   const input = setupKeyboard(mario)
   input.listenTo(window)
 
+  // *** Debug Purpose ***
+  // level.comp.layers.push(
+  //   createCollisionLayer(level),
+  //   createCameraLayer(camera))
   // setupMouseControl(canvas, mario, camera)
+  // **********************
 
   const timer = new Timer(1 / 60)
   timer.update = function update (deltaTime) {
