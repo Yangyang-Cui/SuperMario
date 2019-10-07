@@ -1,17 +1,39 @@
 import Level from '../Level.js'
 import { createBackgroundLayer, createSpriteLayer } from '../layers.js'
 import { loadJSON, loadSpriteSheet } from '../loaders.js'
+import { Matrix } from '../math.js'
 
 export async function loadLevel (name) {
   const levelSpec = await loadJSON(`../levels/${name}.json`)
   const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
   const level = new Level()
-  createTiles(level, levelSpec.tiles, levelSpec.patterns)
-  const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
+
+  const collisionGrid = createCollisionGrid(levelSpec.tiles, levelSpec.patterns)
+  level.setCollisionGrid(collisionGrid)
+
+  const backgroundGrid = createBackgroundGrid(levelSpec.tiles, levelSpec.patterns)
+  const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
   level.comp.layers.push(backgroundLayer)
+
   const spriteLayer = createSpriteLayer(level.entities)
   level.comp.layers.push(spriteLayer)
   return level
+}
+
+function createCollisionGrid (tiles, patterns) {
+  const grid = new Matrix()
+  for (const { tile, x, y } of expandTiles(tiles, patterns)) {
+    grid.set(x, y, { type: tile.type })
+  }
+  return grid
+}
+
+function createBackgroundGrid (tiles, patterns) {
+  const grid = new Matrix()
+  for (const { tile, x, y } of expandTiles(tiles, patterns)) {
+    grid.set(x, y, { name: tile.name })
+  }
+  return grid
 }
 
 function * expandSpan (xStart, xLen, yStart, yLen) {
@@ -43,20 +65,24 @@ function * expandRanges (ranges) {
   }
 }
 
-function createTiles (level, tiles, patterns, offsetX = 0, offsetY = 0) {
-  for (const tile of tiles) {
-    for (const { x, y } of expandRanges(tile.ranges)) {
-      const deriveX = x + offsetX
-      const deriveY = y + offsetY
-      if (tile.pattern) {
-        const tiles = patterns[tile.pattern].tiles
-        createTiles(level, tiles, patterns, deriveX, deriveY)
-      } else {
-        level.tiles.set(deriveX, deriveY, {
-          name: tile.name,
-          type: tile.type
-        })
+function * expandTiles (tiles, patterns) {
+  function * walkTiles (tiles, offsetX, offsetY) {
+    for (const tile of tiles) {
+      for (const { x, y } of expandRanges(tile.ranges)) {
+        const deriveX = x + offsetX
+        const deriveY = y + offsetY
+        if (tile.pattern) {
+          const tiles = patterns[tile.pattern].tiles
+          yield * walkTiles(tiles, deriveX, deriveY)
+        } else {
+          yield {
+            tile,
+            x: deriveX,
+            y: deriveY
+          }
+        }
       }
     }
   }
+  yield * walkTiles(tiles, 0, 0)
 }
