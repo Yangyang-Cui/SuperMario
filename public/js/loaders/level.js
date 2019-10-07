@@ -8,12 +8,17 @@ export async function loadLevel (name) {
   const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
   const level = new Level()
 
-  const collisionGrid = createCollisionGrid(levelSpec.tiles, levelSpec.patterns)
+  const mergedTiles = levelSpec.layers.reduce((mergedTiles, layerSpec) => {
+    return mergedTiles.concat(layerSpec.tiles)
+  }, [])
+  const collisionGrid = createCollisionGrid(mergedTiles, levelSpec.patterns)
   level.setCollisionGrid(collisionGrid)
 
-  const backgroundGrid = createBackgroundGrid(levelSpec.tiles, levelSpec.patterns)
-  const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
-  level.comp.layers.push(backgroundLayer)
+  levelSpec.layers.forEach((layerSpec) => {
+    const backgroundGrid = createBackgroundGrid(layerSpec.tiles, levelSpec.patterns)
+    const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
+    level.comp.layers.push(backgroundLayer)
+  })
 
   const spriteLayer = createSpriteLayer(level.entities)
   level.comp.layers.push(spriteLayer)
